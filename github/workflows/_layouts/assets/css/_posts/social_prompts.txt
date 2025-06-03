@@ -1,1 +1,22 @@
-
+Write a 280-character tweet about using free no-code landing page builders to grow email lists in 2025.
+Generate a LinkedIn post (max 1,300 characters) on why every bootstrapper needs an automated SaaS growth stack.
+Write a tweet: "5 free tools every startup needs to launch faster! #NoCode #SaaS".
+Create a LinkedIn carousel concept: "Top 3 free email marketing tools & how to use them".
+Generate a tweet about automating your social scheduling with Buffer free tier.
+Write a LinkedIn post on using Ubersuggest to find low-competition keywords.
+Tweet: "Ever wondered how to track user behavior without code? Use Hotjar’s free plan! 📊 #GrowthHacking".
+LinkedIn: "How to set up Google Analytics 4 in under 10 minutes".
+Tweet: "Design like a pro for free—5 Canva tips for non-designers. #Startups".
+LinkedIn: "The ultimate free CRM showdown: HubSpot vs. alternatives".
+Create a tweet about Trello hacks for managing remote teams.
+LinkedIn: "Why you need Bitly in your marketing stack (even if you’re on a budget)".
+Tweet: "Zapier free tier: automate 100 tasks/month without spending a dime!".
+LinkedIn: "Carrd vs. WordPress: Which is best for quick landing pages?".
+Tweet: "Collect emails like a pro—Typeform’s free plan is all you need #EmailMarketing".
+LinkedIn: "Increase engagement with OneSignal push notifications—free tier guide".
+Tweet: "Monday.com free plan: manage up to 2 boards with your team! #Productivity".
+LinkedIn: "Sendinblue vs. Mailchimp: Choosing the right free email tool".
+Tweet: "Hotjar heatmaps: See what users really want on your site. #UserExperience".
+LinkedIn: "How to use Bitly data to inform your content strategy".
+Tweet: "Buffer’s new scheduler features for 2025—check them out!".
+LinkedIn: "Case Study: A startup grew to 10k MRR using free SaaS tools".
