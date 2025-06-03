@@ -1,4 +1,3 @@
-Create _config.yml
 collections:
   social:
     output: true
