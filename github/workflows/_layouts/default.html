@@ -1,1 +1,54 @@
+Create default.html
+```html
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>{{ page.title }} | SaaS Bundle Hub</title>
+          <link rel="stylesheet" href="/assets/css/style.css" />
+          <!-- Google Analytics 4 -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXX');
+          </script>
+          <!-- Hotjar Tracking Code -->
+          <script>
+            (function(h, o, t, j, a, r) {
+              h.hj = h.hj || function() {(h.hj.q = h.hj.q || []).push(arguments)};
+              h._hjSettings = { hjid: YOUR_HOTJAR_ID, hjsv: 6 };
+              a = o.getElementsByTagName('head')[0];
+              r = o.createElement('script');r.async = 1;
+              r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+              a.appendChild(r);
+            })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+          </script>
+          <!-- OneSignal SDK -->
+          <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+          <script>
+            window.OneSignal = window.OneSignal || [];
+            OneSignal.push(function() {
+              OneSignal.init({ appId: "YOUR_ONESIGNAL_APP_ID" });
+            });
+          </script>
+        </head>
+        <body>
+          <header>
+            <nav>
+              <a href="/">Home</a> | <a href="/blog/">Blog</a>
+            </nav>
+          </header>
 
+          <main>
+            {{ content }}
+          </main>
+
+          <footer>
+            <p>&copy; 2025 SaaS Bundle Hub</p>
+          </footer>
+        </body>
+      </html>
+      ```
