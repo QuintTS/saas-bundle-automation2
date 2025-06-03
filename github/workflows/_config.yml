@@ -1,1 +1,5 @@
-
+Create _config.yml
+collections:
+  social:
+    output: true
+    permalink: /social/:title
