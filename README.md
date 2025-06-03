@@ -1,1 +1,17 @@
-find . -type f | sort > files.txt
+Saas-bundle-automation/
+README.md
+_config.yml
+_layouts/
+default.html
+index.md
+assets/
+ccs/
+style.css
+posts/
+2025-06-03-sample-post.md
+keywords.txt
+social_prompts.txt
+github/
+worksflows/
+auto_generate.yml
+auto_social.yml
