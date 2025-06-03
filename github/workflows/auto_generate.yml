@@ -1,1 +1,68 @@
+Create auto_generate.yml
+name: Auto-Generate Blog Posts
 
+on:
+  schedule:
+    # Elke maandag om 07:00 UTC (08:00 CET)
+    - cron: '0 7 * * 1'
+  workflow_dispatch: {}
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Lees eerstvolgende keyword uit keywords.txt
+        id: read_keyword
+        run: |
+          # Haal de eerste regel uit keywords.txt
+          KEYWORD=$(head -n 1 keywords.txt)
+          echo "Geselecteerd keyword: $KEYWORD"
+          echo "::set-output name=KW::$KEYWORD"
+
+          # Verwijder die regel uit keywords.txt zodat we die niet opnieuw gebruiken
+          tail -n +2 keywords.txt > temp.txt && mv temp.txt keywords.txt
+
+          # Commit de aangepaste keywords.txt zodat de gebruikte keyword verdwijnt
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add keywords.txt
+          git commit -m "Remove used keyword: $KEYWORD"
+          git push origin ${{ secrets.BRANCH }}
+
+      - name: Genereer blogpost met OpenAI
+        id: ai_post
+        run: |
+          KW="${{ steps.read_keyword.outputs.KW }}"
+          # Maak een titel-feitstring
+          TITLE="Best ${KW} [2025 Guide]"
+          PROMPT="Schrijf een 1500-woorden SEO-geoptimaliseerde blogpost in Markdown met de titel: '${TITLE}', inclusief H2/H3 koppen, bullet-lists en een CTA aan het einde die linkt naar mijn Carrd-landingspagina (https://<your-username>.github.io) in Markdown-link-syntax."
+
+          RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "model": "gpt-4o-mini",
+              "messages": [{"role":"user","content":"'"$PROMPT"'"}],
+              "max_tokens": 3000,
+              "temperature": 0.7
+            }' | jq -r '.choices[0].message.content')
+
+          # Zet de Markdown-output in een nieuw Jekyll _posts-bestand
+          DATE=$(date +'%Y-%m-%d')
+          SLUG=$(echo "$KW" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+          FILENAME="_posts/${DATE}-best-${SLUG}.md"
+
+          echo "$RESPONSE" > "$FILENAME"
+
+      - name: Commit en push nieuwe post
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add _posts
+          git commit -m "Auto-generated post voor keyword: ${{ steps.read_keyword.outputs.KW }}"
+          git push origin ${{ secrets.BRANCH }}
+main
