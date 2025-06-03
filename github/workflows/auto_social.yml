@@ -1,1 +1,72 @@
+Create auto_social.yml
+name: Auto-Generate Social Posts
 
+on:
+  schedule:
+    # Eerste dag van de maand om 07:00 UTC (08:00 CET)
+    - cron: '0 7 1 * *'
+  workflow_dispatch: {}
+
+jobs:
+  gen_social:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Lees volgende 30 prompts uit social_prompts.txt
+        id: read_prompts
+        run: |
+          # Haal de eerste 30 regels op
+          head -n 30 social_prompts.txt > this_month_prompts.txt
+          # Verwijder die 30 regels uit social_prompts.txt
+          tail -n +31 social_prompts.txt > temp.txt && mv temp.txt social_prompts.txt
+
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add social_prompts.txt
+          git commit -m "Rotate social prompts (gebruik eerste 30 voor deze maand)"
+          git push origin ${{ secrets.BRANCH }}
+
+      - name: Genereer social snippets met OpenAI
+        run: |
+          DATE_PREFIX=$(date +'%Y-%m-01')
+          mkdir -p _posts_social
+          COUNTER=0
+
+          while IFS= read -r PROMPT; do
+            ((COUNTER++))
+            # Roep OpenAI aan
+            RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
+              -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "model": "gpt-4o-mini",
+                "messages": [{"role":"user","content":"'"$PROMPT"'"}],
+                "max_tokens": 300,
+                "temperature": 0.8
+              }' | jq -r '.choices[0].message.content')
+
+            # Schrijf elk antwoord naar een Markdown-bestand in _posts_social
+            FILENAME="_posts_social/${DATE_PREFIX}-post${COUNTER}.md"
+
+            cat <<EOF > "$FILENAME"
+---
+layout: default
+title: "Social Snippet ${DATE_PREFIX}-post${COUNTER}"
+date: ${DATE_PREFIX} 08:00:00 +0100
+---
+
+$RESPONSE
+EOF
+
+          done < this_month_prompts.txt
+
+      - name: Commit en push social posts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add _posts_social
+          git commit -m "Auto-generated social posts voor ${DATE_PREFIX}"
+          git push origin ${{ secrets.BRANCH }}
