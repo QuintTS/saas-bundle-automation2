@@ -1,17 +1,17 @@
-Saas-bundle-automation/
-README.md
-_config.yml
-_layouts/
-default.html
-index.md
-assets/
-ccs/
-style.css
-posts/
-2025-06-03-sample-post.md
-keywords.txt
-social_prompts.txt
-github/
-worksflows/
-auto_generate.yml
-auto_social.yml
+saas-bundle-automation/
+├── README.md
+├── _config.yml
+├── _layouts/
+│   └── default.html
+├── index.md
+├── assets/
+│   └── css/
+│       └── style.css
+├── _posts/
+│   └── 2025-06-02-sample-post.md
+├── keywords.txt
+├── social_prompts.txt
+└── .github/
+    └── workflows/
+        ├── auto_generate.yml
+        └── auto_social.yml
